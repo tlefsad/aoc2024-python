@@ -20,6 +20,8 @@ def program(input_file: str) -> None:
     with open_input_file(input_file) as fobj:
         location_ids = read_input(fobj)
 
+    print(max(location_ids.fst_list), max(location_ids.snd_list))
+
     # Part 1: What is the total distance between your lists?
     print("Part 1:", location_ids.total_distance)
 
