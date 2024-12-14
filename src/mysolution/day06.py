@@ -43,7 +43,7 @@ class Puzzle:
 
     @cached_property
     def p1(self) -> int:
-        grid = deepcopy(self.grid)
+        grid = self.grid
         m, n = len(grid), len(grid[0])
         directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
         x, y = next((i, j) for i in range(m) for j in range(n) if grid[i][j] == '^')
@@ -64,7 +64,29 @@ class Puzzle:
 
     @cached_property
     def p2(self) -> int:
-        return 0
+        grid = self.grid
+        m, n = len(grid), len(grid[0])
+        directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+        ans = 0
+        start_x, start_y, start_z = next((r, c, 0) for r in range(m) for c in range(n) if grid[r][c] == '^')
+        for i in range(m):
+            for j in range(n):
+                x, y, z = start_x, start_y, start_z
+                visited = set()
+                while True:
+                    if (x, y, z) in visited:
+                        ans += 1
+                        break
+                    visited.add((x, y, z))
+                    dx, dy = directions[z]
+                    new_x, new_y = x + dx, y + dy
+                    if not (0 <= new_x < m and 0 <= new_y < n):
+                        break
+                    if grid[new_x][new_y] == '#' or (new_x, new_y) == (i, j):
+                        z = (z+1) % 4
+                    else:
+                        x, y = new_x, new_y
+        return ans
 
 
 if __name__ == '__main__':
